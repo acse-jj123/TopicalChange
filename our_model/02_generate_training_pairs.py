@@ -70,10 +70,14 @@ class Doc(object):
                                         "section_pos": section_pos,
                                         "section_neg": section_neg})
 
+    # LTN: label: section's name ('section' in json)
+    # LTN: section: sections's content ('text' in json)
     def generate_positive_samples(self, label, section, doc):
         second_section = self._add_samples(label, section, doc, 1)
         return second_section
 
+    # LTN: label: section's name ('section' in json)
+    # LTN: section: sections's content ('text' in json)
     def generate_negative_samples(self, label, section, doc):
         # choose a random label as negative
         rand_neg_label = label
@@ -109,6 +113,8 @@ class Documents(object):
 
         self.all_labels = list(self.all_docs.keys())
 
+    # LTN: label: section's name ('section' in json)
+    # LTN: section: sections's content ('text' in json)
     def _add_samples(self, label, section, value):
         rand_pos = random.randint(0, self.all_lens[label] - 1)
         second_section = self.all_docs[label][rand_pos]
@@ -177,10 +183,11 @@ class ConsecutiveDocuments(Doc):
             doc = {}
             with open(os.path.join(folder, f)) as fp:
                 tos = json.load(fp)
-            for section in tos:
+            # for section in tos:
+            for section in tos['level1_headings']: #this is modified by LTN
                 # Transform dict into X/y sample
-                text = section["Text"]
-                label = section["Section"]
+                text = section["text"]
+                label = section["section"]
                 doc = self.add_to_section(text, label, doc)
 
             self.all_docs.append(doc)
@@ -247,10 +254,12 @@ def load_files(files, folder):
         with open(os.path.join(folder, f)) as fp:
             tos = json.load(fp)
 
-        for section in tos:
+        # for section in tos:
+        for section in tos['level1_headings']: #this is modified by LTN
+            # print(section)
             # Transform dict into X/y sample
-            text = section["Text"]
-            label = section["Section"]
+            text = section["text"]
+            label = section["section"]
 
             inputs.append(text)
             labels.append(label)

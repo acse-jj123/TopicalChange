@@ -1,0 +1,10 @@
+python3 our_model/01_clean_sections.py --paragraph --input_folder tos-data-small --output_folder outputs/s1
+
+
+
+python3 our_model/02_generate_training_pairs.py --input_folder outputs/s1 --output_folder outputs/s2 \
+  --sentence_tokenizer_path SENTENCE_TOKENIZER_PATH \
+  --sample_number 3 \
+  --heading_level 1 \
+  --storage_method raw \
+  --consecutive 
